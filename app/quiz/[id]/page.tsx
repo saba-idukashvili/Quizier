@@ -71,15 +71,20 @@ export default function QuizDetail() {
     }, 4000);
   };
 
-  if (!quiz) return <p>Loading...</p>;
+  if (!quiz)
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p>იტვირთება...</p>
+      </div>
+    );
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 dark:bg-gray-900">
       {showResults ? (
         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-4 text-center">Quiz Results</h2>
+          <h2 className="text-2xl font-bold mb-4 text-center">შედეგები</h2>
           <p className="text-lg mb-4 text-center">
-            You scored {score} out of {questions.length}
+            ქულა: {score}/{questions.length}
           </p>
           <Button
             onClick={() => {
@@ -90,16 +95,16 @@ export default function QuizDetail() {
             className="w-full"
             variant="outline"
           >
-            Play Again
+            თავიდან დაიწყება
           </Button>
           <Link href="/quiz-list">
-            <Button className="w-full mt-2">Go Back</Button>
+            <Button className="w-full mt-2">გამოსვლა</Button>
           </Link>
         </div>
       ) : (
         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md">
           <h2 className="text-2xl font-bold mb-4">
-            Question {currentQuestionIndex + 1} of {questions.length}
+            კითხვა {currentQuestionIndex + 1}/{questions.length}
           </h2>
           <p className="text-lg mb-4">
             {questions[currentQuestionIndex].question_text}
@@ -129,12 +134,21 @@ export default function QuizDetail() {
           </div>
           {selectedOption !== null && (
             <div className="mt-4 text-center">
-              <p className={`text-lg ${isCorrectAnswer ? "text-green-700" : "text-red-600"}`}>
-                {isCorrectAnswer ? "Correct!" : "Incorrect!"}
+              <p
+                className={`text-lg ${
+                  isCorrectAnswer ? "text-green-700" : "text-red-600"
+                }`}
+              >
+                {isCorrectAnswer ? "სწორია!" : "არასწორია!"}
               </p>
               {!isCorrectAnswer && (
                 <p className="text-lg text-green-600">
-                  The correct answer is: {questions[currentQuestionIndex].options.find((option: any) => option.is_correct).option_text}
+                  სწორი პასუხი :{" "}
+                  {
+                    questions[currentQuestionIndex].options.find(
+                      (option: any) => option.is_correct
+                    ).option_text
+                  }
                 </p>
               )}
             </div>

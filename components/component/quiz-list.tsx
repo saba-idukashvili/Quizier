@@ -24,13 +24,13 @@ interface Quiz {
   id: number;
   title: string;
   description: string;
-  difficulty: "Easy" | "Medium" | "Hard";
+  difficulty: "ადვილი" | "საშვალო" | "ძნელი";
 }
 
 export default function QuizLists() {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState<"title" | "difficulty">("title");
+  const [sortBy, setSortBy] = useState<"სათაური" | "სიძნელე">("სათაური");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function QuizLists() {
       quiz.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    if (sortBy === "title") {
+    if (sortBy === "სათაური") {
       filtered = filtered.sort((a, b) => a.title.localeCompare(b.title));
     } else {
       filtered = filtered.sort((a, b) =>
@@ -65,43 +65,46 @@ export default function QuizLists() {
           <h1 className="text-3xl font-bold">Quizier</h1>
         </Link>
         <div className="md:hidden">
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Menu className="w-8 h-8 font-bold" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <div className="py-4 mx-4 flex items-center gap-4">
-              <Input
-                type="text"
-                placeholder="Search quizzes..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-40 md:w-auto px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="flex items-center gap-2">
-                    <ListOrderedIcon className="w-5 h-5" />
-                    Sort by {sortBy === "title" ? "Title" : "Difficulty"}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-48">
-                  <DropdownMenuItem onClick={() => setSortBy("title")}>
-                    Title
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setSortBy("difficulty")}>
-                    Difficulty
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Menu className="w-8 h-8 font-bold" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <div className="py-4 mx-4 flex flex-col items-center gap-4">
+                <Input
+                  type="text"
+                  placeholder="მოძებნე ქვიზები"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="md:w-auto px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="flex items-center gap-2"
+                    >
+                      <ListOrderedIcon className="w-5 h-5" />
+                      დაალაგე {sortBy === "სათაური" ? "სათაურით" : "სიძნელეით"}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-48">
+                    <DropdownMenuItem onClick={() => setSortBy("სათაური")}>
+                      სათაური
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setSortBy("სიძნელე")}>
+                      სიძნელე
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <div className="hidden md:flex items-center gap-4">
           <Input
             type="text"
-            placeholder="Search quizzes..."
+            placeholder="მოძებნე ქვიზები"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -110,15 +113,15 @@ export default function QuizLists() {
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="flex items-center gap-2">
                 <ListOrderedIcon className="w-5 h-5" />
-                Sort by {sortBy === "title" ? "Title" : "Difficulty"}
+                დაალაგე {sortBy === "სათაური" ? "სათაურით" : "სიძნელით"}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-48">
-              <DropdownMenuItem onClick={() => setSortBy("title")}>
-                Title
+              <DropdownMenuItem onClick={() => setSortBy("სათაური")}>
+                სათაური
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setSortBy("difficulty")}>
-                Difficulty
+              <DropdownMenuItem onClick={() => setSortBy("სიძნელე")}>
+                სიძნელე
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -146,9 +149,9 @@ export default function QuizLists() {
               <div className="flex items-center justify-between">
                 <div
                   className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    quiz.difficulty === "Easy"
+                    quiz.difficulty === "ადვილი"
                       ? "bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300"
-                      : quiz.difficulty === "Medium"
+                      : quiz.difficulty === "საშვალო"
                       ? "bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300"
                       : "bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300"
                   }`}
@@ -157,7 +160,7 @@ export default function QuizLists() {
                 </div>
                 <Link href={`quiz/${quiz.id}`}>
                   <Button variant="outline" size="sm">
-                    Start Quiz
+                    დაიწყე ქვიზი
                   </Button>
                 </Link>
               </div>
